@@ -26,6 +26,7 @@ function loopVideo() {
         console.log("Video length: " + duration + "ms");
         setTimeout(loopVideo, duration);
         startTime = moment();
+        var video = { id: videoId, startTime: 0 };
         io.emit('video', videoId);
       }
     });
