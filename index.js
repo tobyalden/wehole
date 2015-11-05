@@ -22,8 +22,8 @@ http.listen(3000, function() {
 	console.log('listening on *:3000');
 });
 
-function sayHello() {
-  console.log("Hello world!");
-};
+// function sayHello() {
+//   console.log("Hello world!");
+// };
  
-repeat(sayHello).every(500, 'ms').for(2, 'minutes').start.in(5, 'sec');
+// repeat(sayHello).every(500, 'ms').for(2, 'minutes').start.in(5, 'sec');
