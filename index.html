@@ -51,7 +51,7 @@ frameborder="0" allowFullScreen></iframe> -->
         socket.emit('video request');
         socket.on('video', function(video) {
           console.log('Video recieved. Playing video.')
-          player.loadVideoById(video);
+          player.loadVideoById(video.id, video.startTime);
         });
       }
 
