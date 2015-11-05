@@ -27,7 +27,7 @@ function loopVideo() {
         setTimeout(loopVideo, duration);
         startTime = moment();
         var video = { id: videoId, startTime: 0 };
-        io.emit('video', videoId);
+        io.emit('video', video);
       }
     });
   }
@@ -57,6 +57,12 @@ io.on('connection', function(socket) {
 
 });
 
-http.listen(process.env.PORT, function() {
-	console.log('Listening on *:' + process.env.PORT + '.');
+// Development
+http.listen(3000, function() {
+  console.log('Listening on *:3000.');
 });
+
+// Production
+// http.listen(process.env.PORT, function() {
+// 	console.log('Listening on *:' + process.env.PORT + '.');
+// });
