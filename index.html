@@ -3,6 +3,7 @@
   <head>
     <title>WeHole</title>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   </head>
 
   <body>
@@ -13,7 +14,16 @@ frameborder="0" allowFullScreen></iframe> -->
 
     <div id="player"></div>
 
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" />
+      <button>Send</button>
+    </form>    
+
     <script>
+
+      var socket = io();
+
       // 2. This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
 
@@ -28,7 +38,6 @@ frameborder="0" allowFullScreen></iframe> -->
         player = new YT.Player('player', {
           height: '390',
           width: '640',
-          videoId: 'p89luc-8I_s',
           events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -38,30 +47,24 @@ frameborder="0" allowFullScreen></iframe> -->
 
       // 4. The API will call this function when the video player is ready.
       function onPlayerReady(event) {
-        event.target.playVideo();
+        console.log('Player ready. Requesting video...')
+        socket.emit('video request');
+        socket.on('video', function(video) {
+          console.log('Video recieved. Playing video.')
+          player.loadVideoById(video);
+        });
       }
 
       function onPlayerStateChange(event) {
         console.log("State change.");
       }
 
-    </script>
-
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" />
-      <button>Send</button>
-    </form>    
-
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script>
-      var socket = io();
       $('form').submit(function() {
         socket.emit('chat message', $('#m').val());
         $('#m').val('');
         return false;
       });
-       socket.on('chat message', function(msg) {
+      socket.on('chat message', function(msg) {
         $('#messages').append($('<li>').text(msg));
       });
     </script>
