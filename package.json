@@ -1,7 +1,4 @@
 {
-	"scripts": {
-	  "start": "node index.js"
-	}
   "name": "wehole",
   "version": "0.0.1",
   "description": "youhole together",
@@ -20,5 +17,11 @@
     "heroku"
   ],
   "author": "brlka",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+	  "start": "node index.js"
+	},
+	"engines": {
+    "node": "4.2.2"
+  }
 }
