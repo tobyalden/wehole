@@ -23,6 +23,7 @@ frameborder="0" allowFullScreen></iframe> -->
     <script>
 
       var socket = io();
+      var username = "doug";
 
       // 2. This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
@@ -64,9 +65,14 @@ frameborder="0" allowFullScreen></iframe> -->
         if(keycode == '13'){
           var message = $('#textbox').val();
           message = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          message = "<b>" + username + ": </b>" + message;
           socket.emit('chat message', message);
           $('#textbox').val('');
         }
+      });
+
+      socket.on('user name', function(new_username) {
+        username = new_username;
       });
 
       socket.on('chat message', function(msg) {
