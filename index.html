@@ -59,7 +59,8 @@ frameborder="0" allowFullScreen></iframe> -->
         console.log("State change.");
       }
 
-      $('form').submit(function() {
+      $('form').submit(function(e) {
+        e.preventDefault();
         socket.emit('chat message', $('#m').val());
         $('#m').val('');
         return false;
