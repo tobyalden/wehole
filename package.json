@@ -4,13 +4,14 @@
   "description": "youhole together",
   "dependencies": {
     "express": "^4.10.2",
+    "jfs": "^0.2.6",
     "moment": "^2.10.6",
     "socket.io": "^1.3.7"
   },
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "keywords": [
     "example",
@@ -18,10 +19,7 @@
   ],
   "author": "brlka",
   "license": "MIT",
-  "scripts": {
-	  "start": "node index.js"
-	},
-	"engines": {
+  "engines": {
     "node": "4.2.2"
   }
 }
