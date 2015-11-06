@@ -53,11 +53,11 @@ io.on('connection', function(socket) {
 });
 
 // Development
-// http.listen(3000, function() {
-//   console.log('Listening on *:3000.');
-// });
+http.listen(3000, function() {
+  console.log('Listening on *:3000.');
+});
 
 // Production
-http.listen(process.env.PORT, function() {
-	console.log('Listening on *:' + process.env.PORT + '.');
-});
+// http.listen(process.env.PORT, function() {
+// 	console.log('Listening on *:' + process.env.PORT + '.');
+// });
