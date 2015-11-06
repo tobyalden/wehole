@@ -30,14 +30,16 @@ const INITIAL_TIME_TILL_VOTE = 10;
 const INITIAL_VOTING_TIME = 10;
 var voteTimer = INITIAL_TIME_TILL_VOTE;
 var isVotingOpen = false;
+var displayVoteResults = false;
 var votes = { stay: 0, skip: 0};
 
 var startTime;
 findVideo();
 
 function countDownVote() {
-  io.emit('vote info', {voteTimer: voteTimer, isVotingOpen: isVotingOpen});
+  io.emit('vote info', {voteTimer: voteTimer, isVotingOpen: isVotingOpen, displayVoteResults: displayVoteResults});
   console.log({voteTimer: voteTimer, isVotingOpen: isVotingOpen});
+  voteTimer -= 1;
   if(voteTimer === 0) {
     if(!isVotingOpen) {    
       isVotingOpen = true;
@@ -46,17 +48,17 @@ function countDownVote() {
       tallyVotes();
     }
   }
-  voteTimer -= 1;
 }
 
 function tallyVotes() {
   if(votes.skip > votes.stay) {
+    displayVoteResults = true;
     io.emit('vote results', true);
     findVideo();
   } else {
     io.emit('vote results', false);
     isVotingOpen = false;
-    voteTimer = INITIAL_TIME_TILL_VOTE * 2;
+    voteTimer = INITIAL_TIME_TILL_VOTE;
   }
   votes = { stay: 0, skip: 0};
 }
@@ -181,6 +183,7 @@ function playVideo(videoId) {
       startTime = moment();
       voteTimer = INITIAL_TIME_TILL_VOTE;
       isVotingOpen = false;
+      displayVoteResults = false;
       setTimeout(findVideo, duration);
       var video = { id: videoId, startTime: 0 };
       io.emit('video', video);

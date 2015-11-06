@@ -89,12 +89,14 @@ frameborder="0" allowFullScreen></iframe> -->
 
       socket.on('vote info', function(voteInfo) {
         setCanVote(voteInfo.isVotingOpen && !hasVoted);
-        if(voteInfo.isVotingOpen && !hasVoted) {
-          $('#vote-timer').html("<b>Votes are open!</b> " + voteInfo.voteTimer + " seconds until votes are tallied...");
-        } else if(voteInfo.isVotingOpen) {
-          $('#vote-timer').html("Vote submitted. " + voteInfo.voteTimer + " seconds until votes are tallied...");
-        } else {
-          $('#vote-timer').html("Voting in " + voteInfo.voteTimer + " seconds...");
+        if(!voteInfo.displayVoteResults) {
+          if(voteInfo.isVotingOpen && !hasVoted) {
+            $('#vote-timer').html("<b>Votes are open!</b> " + voteInfo.voteTimer + " seconds until votes are tallied...");
+          } else if(voteInfo.isVotingOpen) {
+            $('#vote-timer').html("Vote submitted. " + voteInfo.voteTimer + " seconds until votes are tallied...");
+          } else {
+            $('#vote-timer').html("Voting in " + voteInfo.voteTimer + " seconds...");
+          }
         }
       }); 
 
@@ -106,30 +108,6 @@ frameborder="0" allowFullScreen></iframe> -->
         }
         hasVoted = false;
       });
-
-      // socket.on('vote info', function(voteInfo) {
-      //   if(voteInfo.timeTillVote > 0) {
-      //     $('#vote-timer').html("Voting in " + voteInfo.timeTillVote + " seconds...");
-      //   } 
-      //   else if (!hasVoted) {
-      //     $('#vote-timer').html("<b>Votes are open!</b> " + voteInfo.votingTimeRemaining + " seconds left until votes are tallied...");
-      //   } else {
-      //     $('#vote-timer').html("Vote submitted. " + voteInfo.votingTimeRemaining + " seconds left until votes are tallied...");
-      //   }
-      // });
-
-      // socket.on('voting status', function(isOpen) {
-      //   setCanVote(isOpen);
-      //   hasVoted = false;
-      // });
-
-      // socket.on('vote results', function(voteSuccessful) {
-      //   if(voteSuccessful) {
-      //     $('#vote-timer').html("Vote successful! Skipping video...");
-      //   } else {
-      //     $('#vote-timer').html("Vote unsuccessful. Continuing video.");
-      //   }
-      // });
 
       $('#skip').click(function() {
         setCanVote(false);
