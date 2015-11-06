@@ -68,7 +68,7 @@ frameborder="0" allowFullScreen></iframe> -->
       });
 
       socket.on('chat message', function(msg) {
-        $('#messages').append('<li>' + msg + '</li>');
+        $('#messages').prepend('<li>' + msg + '</li>');
       });
     </script>
 
