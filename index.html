@@ -15,7 +15,7 @@ frameborder="0" allowFullScreen></iframe> -->
     <div id="player"></div>
 
     <ul id="messages"></ul>
-    <form action="">
+    <form action="javascript:void(0);">
       <input id="m" autocomplete="off" />
       <button>Send</button>
     </form>    
@@ -63,7 +63,7 @@ frameborder="0" allowFullScreen></iframe> -->
         event.preventDefault();
         socket.emit('chat message', $('#m').val());
         $('#m').val('');
-        // return false;
+        return false;
       });
       socket.on('chat message', function(msg) {
         $('#messages').append($('<li>').text(msg));
