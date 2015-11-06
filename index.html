@@ -59,13 +59,6 @@ frameborder="0" allowFullScreen></iframe> -->
         console.log("State change.");
       }
 
-      // $('form').submit(function(event) {
-      //   event.preventDefault();
-      //   socket.emit('chat message', $('#m').val());
-      //   $('#m').val('');
-      //   return false;
-      // });
-
       $('#textbox').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if(keycode == '13'){
@@ -75,7 +68,7 @@ frameborder="0" allowFullScreen></iframe> -->
       });
 
       socket.on('chat message', function(msg) {
-        $('#messages').append('<li>' + text(msg) + '</li>');
+        $('#messages').append('<li>' + msg + '</li>');
       });
     </script>
 
