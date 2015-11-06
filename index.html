@@ -62,7 +62,9 @@ frameborder="0" allowFullScreen></iframe> -->
       $('#textbox').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if(keycode == '13'){
-          socket.emit('chat message', $('#textbox').val());
+          var message = $('#textbox').val();
+          message = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          socket.emit('chat message', message);
           $('#textbox').val('');
         }
       });
