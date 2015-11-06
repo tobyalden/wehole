@@ -12,18 +12,26 @@
 width="640" height="390" src="http://www.youtube.com/embed/W-Q7RMpINVo"
 frameborder="0" allowFullScreen></iframe> -->
 
-    <div id="player"></div>
+    <div id="player"></div> <br>
+
+    <div style="padding-bottom: 5px;">
+      <button id="skip" disabled>Skip</button>
+      <button id="stay" disabled>Stay</button>
+
+      <span id="vote-timer"></span>
+    </div>
 
     <form action="javascript:void(0);">
       <input id="textbox" autocomplete="off" style="width: 635px;" />
-    </form>    
-
+    </form>     
+    
     <ul id="messages"></ul>
 
     <script>
 
       var socket = io();
       var username = "doug";
+      var hasVoted = false;
 
       // 2. This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
@@ -78,6 +86,68 @@ frameborder="0" allowFullScreen></iframe> -->
       socket.on('chat message', function(msg) {
         $('#messages').prepend('<li>' + msg + '</li>');
       });
+
+      socket.on('vote info', function(voteInfo) {
+        setCanVote(voteInfo.isVotingOpen && !hasVoted);
+        if(voteInfo.isVotingOpen && !hasVoted) {
+          $('#vote-timer').html("<b>Votes are open!</b> " + voteInfo.voteTimer + " seconds until votes are tallied...");
+        } else if(voteInfo.isVotingOpen) {
+          $('#vote-timer').html("Vote submitted. " + voteInfo.voteTimer + " seconds until votes are tallied...");
+        } else {
+          $('#vote-timer').html("Voting in " + voteInfo.voteTimer + " seconds...");
+        }
+      }); 
+
+      socket.on('vote results', function(voteSuccessful) {
+        if(voteSuccessful) {
+          $('#vote-timer').html("Vote successful! Skipping video...");
+        } else {
+          $('#vote-timer').html("Vote unsuccessful. Continuing video.");
+        }
+        hasVoted = false;
+      });
+
+      // socket.on('vote info', function(voteInfo) {
+      //   if(voteInfo.timeTillVote > 0) {
+      //     $('#vote-timer').html("Voting in " + voteInfo.timeTillVote + " seconds...");
+      //   } 
+      //   else if (!hasVoted) {
+      //     $('#vote-timer').html("<b>Votes are open!</b> " + voteInfo.votingTimeRemaining + " seconds left until votes are tallied...");
+      //   } else {
+      //     $('#vote-timer').html("Vote submitted. " + voteInfo.votingTimeRemaining + " seconds left until votes are tallied...");
+      //   }
+      // });
+
+      // socket.on('voting status', function(isOpen) {
+      //   setCanVote(isOpen);
+      //   hasVoted = false;
+      // });
+
+      // socket.on('vote results', function(voteSuccessful) {
+      //   if(voteSuccessful) {
+      //     $('#vote-timer').html("Vote successful! Skipping video...");
+      //   } else {
+      //     $('#vote-timer').html("Vote unsuccessful. Continuing video.");
+      //   }
+      // });
+
+      $('#skip').click(function() {
+        setCanVote(false);
+        socket.emit('vote', true);
+        hasVoted = true;
+      });
+
+       $('#stay').click(function() {
+        setCanVote(false);
+        socket.emit('vote', false);
+        hasVoted = true;
+      });
+
+      function setCanVote(canVote) {
+        $('#skip').prop("disabled", !canVote);
+        $('#stay').prop("disabled", !canVote);
+      }
+
     </script>
 
   </body>
